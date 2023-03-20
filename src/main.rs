@@ -1,15 +1,18 @@
-use binaryclock::get_binary_time;
-use chrono::{DateTime, Datelike, Timelike, Local, Duration};
-use std::time::{SystemTime};
+use binaryclock::print_and_get_binaryclock;
+use std::process::Command;
 
 mod binaryclock;
 
 fn main() {
     loop {
-        let current_time = SystemTime::now();
-        let binary_time = get_binary_time(current_time);
-        
-        //print_binary_clock(binary_time);
+        print_and_get_binaryclock();
+        println!("Rust är nice");
+        println!("Bättre än Stagrims klocka");
         std::thread::sleep(std::time::Duration::from_millis(1000));
+        if cfg!(target_os = "windows") {
+            Command::new("cls").status().unwrap();
+        } else {
+            Command::new("clear").status().unwrap();
+        };
     }
 }

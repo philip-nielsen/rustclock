@@ -1,7 +1,6 @@
-use chrono::{DateTime, Datelike, Timelike, Local, Duration};
-use std::time::{SystemTime};
+use chrono::{DateTime, Local};
 
-pub fn get_binary_time(time: SystemTime) -> [u64; 6] {
+fn get_binary_time() -> [u64; 6] {
     let local_time: DateTime<Local> = Local::now();
     let midnight = local_time.date().and_hms(0, 0, 0).with_timezone(&Local);
     let time_since_midnight = local_time.signed_duration_since(midnight).num_seconds() as u64;
@@ -44,8 +43,12 @@ fn print_binary_clock(binary_time: [u64; 6]) {
             let bit = (binary_time[i] >> (3 - j)) & 1;
             print!("{}{} \x1b[0m", color, if bit == 1 { "██" } else { "  " });
         }
-        if i == 5 { println!("\n") };
     }
 
     println!();
+}
+
+pub fn print_and_get_binaryclock() {
+    let binary_time = get_binary_time();
+    print_binary_clock(binary_time);
 }
